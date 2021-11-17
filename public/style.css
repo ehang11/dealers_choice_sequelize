@@ -1,0 +1,35 @@
+* {
+    box-sizing: border-box;
+    font-family: sans-serif;
+   
+  }
+
+  main {
+    display: flex;
+  }
+  
+  main > * {
+    flex: 1;
+  }
+
+  nav {
+    height: 60px;
+    color: blue;
+    background-color: red;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+
+  }
+
+  .player-list {
+    margin: 20px;
+
+    align-items: center;
+    justify-content: center;
+    color: black;
+
+  }
+
+
+  

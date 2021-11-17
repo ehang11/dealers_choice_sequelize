@@ -3,8 +3,6 @@ const conn = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost/dea
 const { STRING, UUID, UUIDV4 } = Sequelize.DataTypes;
 
 
-
-
 //Models [Basketball]:  Players, Teams, Cities
 const Player = conn.define('players', {
     name: {
@@ -28,46 +26,56 @@ const Team = conn.define('teams', {
     name: {
         type: STRING,
         unique: true,
-        primaryKey: true,
         allowNull: false,
         validate: {
             notEmpty: true
         }
     }
+
 });
 
 const City = conn.define('cities', {
     name: {
         type: STRING,
-        unique: true,
         allowNull: false,
+        unique: true,
         validate: {
             notEmpty: true
         }
+
     }
-})
+
+});
+
 //ASSOCIATION
-Player.belongsTo(Player, {as: 'teamMates'});
-Team.hasMany(Player, { foreignKey: 'jerseyNumberID'});
-Team.belongsTo(Team, {as: 'competitors'});
+Player.belongsTo(Player, {as: 'teammates'});
+
+Team.hasMany(Player);
+Player.belongsTo(Team);
 
 //DATA
 const data = {
-    players: ['Kevin_Durant', 'Lebron_James', 'Giannis_Anteokounmpo', 'Stephen_Curry', 'James_Harden', 'Joel_Embiid', 'Anthony_Davis', 'Luka_Doncic'],
-    teams: ['Lakers', 'Sixers', 'Nets', 'Warriors', 'Bucks','Mavericks'],
-    cities: ['Los_Angeles','Philadelphia','Dallas','San_Francisco','Milwaukee','Brooklyn']
-};
+    players: ['Kevin_Durant', 'Lebron_James', 'Giannis_Anteokounmpo', 'Stephen_Curry', 'James_Harden', 'Joel_Embiid', 'Anthony_Davis'],
+    teams: ['Lakers', 'Sixers', 'Nets', 'Warriors', 'Bucks'],
+    cities: ['Los_Angeles','Philadelphia','San_Francisco','Milwaukee','Brooklyn'],
+}
+
+
 const syncAndSeed = async () => {
     await conn.sync({ force: true });
-    const  [Kevin_Durant, Lebron_James, Giannis_Anteokounmpo, Stephen_Curry, James_Harden, Joel_Embiid, Anthony_Davis] = await Promise.all(data.players.map((name) => Player.create({name})));
-    //const [Lakers, Sixers, Nets, Warriors, Bucks];
-    //const  [Los_Angeles,Philadelphia,San_Francisco,Milwaukee,Brooklyn];
 
-    await Promise.all([
-        //update
-    ]);
+    const  [Kevin_Durant, Lebron_James, Giannis_Anteokounmpo, Stephen_Curry, James_Harden, Joel_Embiid, Anthony_Davis] = await Promise.all(
+        data.players.map((name) => Player.create({name})));
+    const [Lakers, Sixers, Nets, Warriors, Bucks] = await Promise.all(
+        data.teams.map((name) => Team.create({name})));
+    const  [Los_Angeles, Philadelphia, San_Francisco, Milwaukee, Brooklyn] = await Promise.all(
+        data.cities.map((name) => City.create({name})));
 
-}
+    
+
+    
+
+};
 
 
 
