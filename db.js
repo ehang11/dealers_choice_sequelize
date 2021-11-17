@@ -52,6 +52,7 @@ Player.belongsTo(Player, {as: 'teammates'});
 
 Team.hasMany(Player);
 Player.belongsTo(Team);
+City.belongsTo(Team);
 
 //DATA
 const data = {

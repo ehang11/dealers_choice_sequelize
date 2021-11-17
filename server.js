@@ -1,11 +1,10 @@
 const express = require('express');
-
 const app = express();
+const path = require('path');
 
 const { syncAndSeed , models: {Player, Team, City}, } = require('./db');
 
 app.use(express.urlencoded({ extended: false }));
-const path = require('path');
 app.use(express.static(path.join(__dirname, "public")));
 
 //route '/'
@@ -91,7 +90,7 @@ app.get('/players', async (req, res, next) => {
                     </div>
                 </nav>
                 <div class = "player-list">
-               
+                LIST OF PLAYERS
                     <ul>
                     ${
                         players.map(player => {
@@ -140,7 +139,7 @@ app.get('/teams', async (req, res, next) => {
                     </div>
                 </nav>
                 <div class = "player-list">
-               
+                LIST OF TEAMS
                     <ul>
                     ${
                         teams.map(team => {
@@ -150,7 +149,7 @@ app.get('/teams', async (req, res, next) => {
                                 ${team.name}
                             </li>
                             `;
-                    }).join('').replace(/_/g, ' ')
+                    }).join('')
                     }
                     </ul>
                 </div>
@@ -189,7 +188,7 @@ app.get('/cities', async (req, res, next) => {
                     </div>
                 </nav>
                 <div class = "player-list">
-               
+               LIST OF CITIES
                     <ul>
                     ${
                         cities.map(city => {
